@@ -182,7 +182,6 @@ class Sourcegraph(object):
 		self.open_channel_os()
 
 	def run_godefinfo(self, filename, cursor_offset, godefinfo_region):
-		#godefinfo_args = [os.path.join(self.settings.ENV['GOPATH'], "bin", "godefinfo"),  '-o', cursor_offset, '-f', filename]
 		godefinfo_args = [os.path.join(self.settings.ENV['GOPATH'], "bin", "godefinfo"),  '-i', '-o', cursor_offset, '-f', filename]
 		log_output('[godefinfo] Running shell command: %s' % ' '.join(godefinfo_args))
 
@@ -191,7 +190,6 @@ class Sourcegraph(object):
 		try:
 			godefinfo_process = subprocess.Popen(godefinfo_args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=self.settings.ENV)
 			godefinfo_output, stderr = godefinfo_process.communicate(input=godefinfo_region)
-			#godefinfo_output, stderr = godefinfo_process.communicate()
 			if godefinfo_output:
 				godefinfo_output = godefinfo_output.decode()
 			if stderr:
@@ -432,20 +430,3 @@ def validate_settings(settings):
 	if return_code != 0:
 		return ERR_GODEFINFO_INSTALL
 
-#import vim
-#sourcegraph_instance = Sourcegraph(Settings())
-#sourcegraph_instance.post_load()
-#filename = vim.eval("s:filename")
-#curr_word = vim.eval("s:currword")
-#curr_offset = vim.eval("s:curroffset")
-#numlines = int(vim.eval("s:numlines"))
-#lines = []
-#for i in range(1, numlines+1):
-#	currline = vim.eval("getline('%s')" % str(i))
-#	lines.append(currline)
-#	preceding_selection = "\n".join(lines)
-#fi = open('/Users/mattfs/Desktop/bytes')
-#bytez = fi.read()
-#fi.close()
-#args = LookupArgs(filename=filename, cursor_offset=curr_offset, preceding_selection="\n".join(lines), selected_token=curr_word)
-#sourcegraph_instance.on_selection_modified_handler(args)

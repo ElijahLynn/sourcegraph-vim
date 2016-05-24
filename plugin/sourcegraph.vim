@@ -12,5 +12,5 @@ function! LookupSymbol()
 	execute "pyfile " . s:path
 endfunc
 
-command! SG call LookupSymbol()
+command! GRAPH call LookupSymbol()
 nnoremap <F2> :SG<CR>
