@@ -13,4 +13,4 @@ function! LookupSymbol()
 endfunc
 
 command! GRAPH call LookupSymbol()
-nnoremap <F2> :SG<CR>
+nnoremap <F2> :GRAPH<CR>
