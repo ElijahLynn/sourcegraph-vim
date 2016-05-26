@@ -88,7 +88,6 @@ class Sourcegraph(object):
 			self.send_curl_request(ExportedParams(Error=validate_output.title, Fix=validate_output.description))
 			return
 		return_object = self.get_sourcegraph_request(lookup_args.filename, lookup_args.cursor_offset, lookup_args.preceding_selection, lookup_args.selected_token)
-		print(return_object)
 		if return_object:
 			self.send_curl_request(return_object)
 		elif not self.settings.AUTO_PROCESS:
@@ -182,7 +181,7 @@ class Sourcegraph(object):
 		self.open_channel_os()
 
 	def run_godefinfo(self, filename, cursor_offset, godefinfo_region):
-		godefinfo_args = [os.path.join(self.settings.ENV['GOPATH'], "bin", "godefinfo"),  '-i', '-o', cursor_offset, '-f', filename]
+		godefinfo_args = [os.path.join(self.settings.ENV['GOPATH'], "bin", "godefinfo"), '-i', '-o', cursor_offset, '-f', filename]
 		log_output('[godefinfo] Running shell command: %s' % ' '.join(godefinfo_args))
 
 		godefinfo_output = b''
@@ -429,4 +428,3 @@ def validate_settings(settings):
 	out, err, return_code = run_shell_command(godefinfo_command, settings.ENV)
 	if return_code != 0:
 		return ERR_GODEFINFO_INSTALL
-
