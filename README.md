@@ -35,11 +35,6 @@ echo "Plug 'sourcegraph/sourcegraph-vim'" >> ~/.vimrc
 vim +PlugInstall
 ```
 
-
- clone `sourcegraph-vim` into your .vim/bundle folder (assumes you are using a Vim package manager, such as  or [Vundle](https://github.com/VundleVim/Vundle.vim)):
-
-
-
 ## Usage
 
 Sourcegraph for Vim opens a channel in your browser to initialize your Sourcegraph session when in Go files. As you navigate through Go files, enter the Vim command ```:GRAPH``` when your cursor is on a symbol to load its definition and references across thousands of public Go repositories.
