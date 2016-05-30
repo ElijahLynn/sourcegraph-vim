@@ -22,7 +22,7 @@ Sourcegraph for Vim opens a channel in your browser to initialize your Sourcegra
 
 ## Map a Vim hotkey
 
-To map Sourcegraph for Vim to a hotkey, add a remap commnad to your ~/.vimrc file. For instance, to map F2 to :GRAPH, add the following to ~/.vimrc.
+To map Sourcegraph for Vim to a hotkey, add a remap command to your ~/.vimrc file. For instance, to map F2 to :GRAPH, add the following to ~/.vimrc.
 ```
 nnoremap <F2> :GRAPH<CR>
 ```
@@ -35,7 +35,7 @@ Sourcegraph for Vim has a number of flags to customize your experience. To chang
 
 To learn more about setting your `GOPATH`, please click [here](https://golang.org/doc/code.html#GOPATH).
 
-Sourcegraph for Sublime searches your shell to find `GOBIN`, the full path of your Go executable. This is typically `$GOROOT/bin/go`. Similarly, Sourcegraph loads your `/bin/bash` startup scripts to search for the `GOPATH` environment variable. If Sourcegraph cannot find your environment variables, or if you would like to use a custom `GOPATH` or `GOBIN`, add them in the settings file as follows:
+Sourcegraph for Sublime searches your shell to find `GOBIN`, the full path of your Go executable. This is typically `$GOROOT/bin/go`. Similarly, Sourcegraph loads your `/bin/bash` startup scripts to search for the `GOPATH` environment variable. If Sourcegraph cannot find your environment variables, or if you would like to use a custom `GOPATH` or `GOBIN`, add them in the ~/.vimrc file as follows:
 
 ```
 g:SOURCEGRAPH_GOPATH = "/path/to/gopath"
@@ -68,7 +68,7 @@ go get -u github.com/sqs/godefinfo
 
 ### Local server
 
-If you want to try Sourcegraph for Sublime on a local Sourcegraph server, you can define its base URL in this file using the key `SG_BASE_URL`.
+If you want to try Sourcegraph for Sublime on a local Sourcegraph server, you can define its base URL in this file using the key `SOURCEGRAPH_BASE_URL` in the ~/.vimrc file.
 
 ```
 g:SOURCEGRAPH_BASE_URL = "https://www.sourcegraph.com"
@@ -76,4 +76,4 @@ g:SOURCEGRAPH_BASE_URL = "https://www.sourcegraph.com"
 
 ## Support
 
-Sourcegraph for Sublime has currently only been tested using Sublime Text 3.
+Sourcegraph for Vim has been tested on Vim 7.3, and requires Python 2.X or Python 3.X to be compiled with your Vim installation. To determine if your Vim is compiled with Python, try running ```:python import sys; print(sys.version)``` from within Vim, and verify that it does not throw an error.
