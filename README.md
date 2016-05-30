@@ -35,7 +35,7 @@ Sourcegraph for Vim has a number of flags to customize your experience. To chang
 
 To learn more about setting your `GOPATH`, please click [here](https://golang.org/doc/code.html#GOPATH).
 
-Sourcegraph for Sublime searches your shell to find `GOBIN`, the full path of your Go executable. This is typically `$GOROOT/bin/go`. Similarly, Sourcegraph loads your `/bin/bash` startup scripts to search for the `GOPATH` environment variable. If Sourcegraph cannot find your environment variables, or if you would like to use a custom `GOPATH` or `GOBIN`, add them in the ~/.vimrc file as follows:
+Sourcegraph for Vim searches your shell to find `GOBIN`, the full path of your Go executable. This is typically `$GOROOT/bin/go`. Similarly, Sourcegraph loads your `/bin/bash` startup scripts to search for the `GOPATH` environment variable. If Sourcegraph cannot find your environment variables, or if you would like to use a custom `GOPATH` or `GOBIN`, add them in the ~/.vimrc file as follows:
 
 ```
 g:SOURCEGRAPH_GOPATH = "/path/to/gopath"
@@ -44,7 +44,7 @@ g:SOURCEGRAPH_GOBIN = "/path/to/gobin"
 
 ### Verbose logging
 
-This setting gives verbose output from Sourcegraph for Sublime to the Sublime Text console, which can be helping when troubleshooting Sourcegraph for Sublime. To open the Sublime console, simply type <kbd>ctrl</kbd>+<kbd>`</kbd>. Different levels of logging are available:
+This setting gives verbose output from Sourcegraph for Vim to the Vim console, which can be helping when troubleshooting Sourcegraph for Vim. Different levels of logging are available:
 
 No logging: `0`
 
@@ -60,7 +60,7 @@ g:SOURCEGRAPH_LOG_LEVEL = 1
 
 ## Godefinfo
 
-Sourcegraph for Sublime should automatically install `godefinfo` when it loads your settings. If you still receive an error message about `godefinfo` installation, you can install it manually by running the following command:
+Sourcegraph for Vim should automatically install `godefinfo` when it loads your settings. If you still receive an error message about `godefinfo` installation, you can install it manually by running the following command:
 
 ```shell
 go get -u github.com/sqs/godefinfo
@@ -68,7 +68,7 @@ go get -u github.com/sqs/godefinfo
 
 ### Local server
 
-If you want to try Sourcegraph for Sublime on a local Sourcegraph server, you can define its base URL in this file using the key `SOURCEGRAPH_BASE_URL` in the ~/.vimrc file.
+If you want to try Sourcegraph for Vim on a local Sourcegraph server, you can define its base URL in this file using the key `SOURCEGRAPH_BASE_URL` in the ~/.vimrc file.
 
 ```
 g:SOURCEGRAPH_BASE_URL = "https://www.sourcegraph.com"
