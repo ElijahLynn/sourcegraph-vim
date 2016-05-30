@@ -10,7 +10,7 @@ Sourcegraph for Vim allows you to view Go definitions on [sourcegraph.com](http:
 
 ## Setup
 
-To install Sourcegraph for Vim, clone `sourcegraph-vim` into your .vim/bundle folder (assumes you are using a Vim package manager):
+To install Sourcegraph for Vim, clone `sourcegraph-vim` into your .vim/bundle folder (assumes you are using a Vim package manager, such as [Pathogen](https://github.com/tpope/vim-pathogen) or [Vundle](https://github.com/VundleVim/Vundle.vim)):
 
 ```shell
 git clone https://github.com/sourcegraph/sourcegraph-vim.git ~/.vim/bundle/sourcegraph-vim
