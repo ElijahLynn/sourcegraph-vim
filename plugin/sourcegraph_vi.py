@@ -10,7 +10,21 @@ def get_vim_variable(variable_name):
 		return vim.eval(variable_name)
 	return None
 
+def get_channel():
+	variable_name = "g:SOURCEGRAPH_CHANNEL"
+	var_exists = vim.eval("exists('%s')" % variable_name)
+	if var_exists is not '0':
+		return vim.eval(variable_name)
+	else:
+		channel_id = sourcegraph_lib.generate_channel_id()
+		vim.command("let %s = '%s'" % (variable_name, channel_id))
+		return channel_id
+
+sourcegraph_lib.SG_LOG_FILE = '/tmp/sourcegraph-vim.log'
 settings = sourcegraph_lib.Settings()
+channel_id = get_channel()
+settings.SG_CHANNEL = channel_id
+
 gopath = get_vim_variable('g:SOURCEGRAPH_GOPATH')
 if gopath:
 	settings.ENV['GOPATH'] = str(gopath.rstrip(os.sep)).strip()
@@ -31,7 +45,7 @@ if log_file:
 	sourcegraph_lib.SG_LOG_FILE = log_file
 
 sourcegraph_instance = sourcegraph_lib.Sourcegraph(settings)
-sourcegraph_instance.post_load()
+sourcegraph_instance.post_load(godefinfo_update=False)
 
 filename = vim.eval("s:filename")
 curr_word = vim.eval("s:currword")
