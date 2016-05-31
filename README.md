@@ -4,7 +4,7 @@
 
 ## Overview
 
-Sourcegraph for Vim allows you to view Go definitions on [sourcegraph.com](http://www.sourcegraph.com) as you code, so you can stay focused on what's important: your code. When your cursor is on a Go symbol, it should load in a channel in your browser:
+Sourcegraph for Vim allows you to view Go definitions on [sourcegraph.com](http://www.sourcegraph.com) as you code, so you can stay focused on what's important: your code. When your cursor is on a Go symbol and you run :GRAPH (or a remapped hotkey), it should load in a channel in your browser:
 
 ![Sourcegraph for Vim](images/setup.jpg)
 

@@ -1,6 +1,7 @@
 import os
 import sys
 import vim
+from threading import Thread
 sys.path.append(os.path.dirname(vim.eval("s:path")))
 import sourcegraph_lib
 
@@ -28,6 +29,9 @@ settings.SG_CHANNEL = channel_id
 gopath = get_vim_variable('g:SOURCEGRAPH_GOPATH')
 if gopath:
 	settings.ENV['GOPATH'] = str(gopath.rstrip(os.sep)).strip()
+auto = get_vim_variable('g:SOURCEGRAPH_AUTO')
+if auto:
+	settings.AUTO = bool(auto)
 gobin = get_vim_variable('g:SOURCEGRAPH_GOBIN')
 if gobin:
 	settings.GOBIN = gobin.rstrip(os.sep)
@@ -44,17 +48,16 @@ log_file = get_vim_variable('g:SOURCEGRAPH_LOG_FILE')
 if log_file:
 	sourcegraph_lib.SG_LOG_FILE = log_file
 
-sourcegraph_instance = sourcegraph_lib.Sourcegraph(settings)
-sourcegraph_instance.post_load(godefinfo_update=False)
+def thread_ready(filename, curr_word, curr_offset, numlines):
+	sourcegraph_instance = sourcegraph_lib.Sourcegraph(settings)
+	sourcegraph_instance.post_load(godefinfo_update=False)
+	lines = []
+	for i in range(1, numlines + 1):
+		currline = vim.eval("getline('%s')" % str(i))
+		lines.append(currline)
+	preceding_selection = "\n".join(lines)
+	args = sourcegraph_lib.LookupArgs(filename=filename, cursor_offset=curr_offset, preceding_selection="\n".join(lines), selected_token=curr_word)
+	sourcegraph_instance.on_selection_modified_handler(args)
 
-filename = vim.eval("s:filename")
-curr_word = vim.eval("s:currword")
-curr_offset = vim.eval("s:curroffset")
-numlines = int(vim.eval("s:numlines"))
-lines = []
-for i in range(1, numlines+1):
-        currline = vim.eval("getline('%s')" % str(i))
-        lines.append(currline)
-        preceding_selection = "\n".join(lines)
-args = sourcegraph_lib.LookupArgs(filename=filename, cursor_offset=curr_offset, preceding_selection="\n".join(lines), selected_token=curr_word)
-sourcegraph_instance.on_selection_modified_handler(args)
+t = Thread(target=thread_ready, args=[vim.eval("s:filename"), vim.eval("s:currword"), vim.eval("s:curroffset"), int(vim.eval("s:numlines"))])
+t.start()
