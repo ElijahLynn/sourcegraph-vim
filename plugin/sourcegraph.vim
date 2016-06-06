@@ -4,7 +4,7 @@ if !has('python')
 	finish
 endif
 
-if (has('python') && g:SOURCEGRAPH_AUTO != "false")
+if (has('python') && (exists("g:SOURCEGRAPH_AUTO") && g:SOURCEGRAPH_AUTO != "false"))
     augroup SourcegraphVim
         autocmd VimEnter     * :call LookupSymbol()
         autocmd VimLeavePre  * :call LookupSymbol()
