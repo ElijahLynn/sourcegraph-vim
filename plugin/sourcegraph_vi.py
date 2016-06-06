@@ -50,7 +50,7 @@ if log_file:
 
 def thread_ready(filename, curr_word, curr_offset, numlines):
 	sourcegraph_instance = sourcegraph_lib.Sourcegraph(settings)
-	sourcegraph_instance.post_load(godefinfo_update=False)
+	sourcegraph_instance.post_load()
 	lines = []
 	for i in range(1, numlines + 1):
 		currline = vim.eval("getline('%s')" % str(i))

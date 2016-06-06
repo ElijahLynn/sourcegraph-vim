@@ -22,7 +22,7 @@ let s:last_offset = 0
 function! LookupSymbol()
 	if (&ft=='go')
     	let s:filename = expand('%p')
-		let s:currword = expand('<cword>')
+		let s:currword = expand('<cWORD>')
 		let s:curroffset = line2byte(line("."))+col(".")
 		let s:numlines = expand(line('$'))
 		if(s:filename==s:last_filename && s:currword==s:last_word)
