@@ -7,7 +7,7 @@ import sys
 import time
 
 
-from threading import Thread
+from threading import Thread, Lock
 try:
 	from urllib.request import Request, urlopen
 	from urllib.error import HTTPError, URLError
@@ -24,6 +24,7 @@ LOG_NONE = 0
 LOG_SYMBOLS = 1
 LOG_NETWORK = 2
 LOG_ALL = 3
+IS_OPENING_CHANNEL = False
 
 LOG_LEVEL = LOG_NONE
 SG_LOG_FILE = '/tmp/sourcegraph-editor.log'
@@ -129,7 +130,6 @@ def check_filetype(filename):
 class Sourcegraph(object):
 	def __init__(self, settings):
 		super(Sourcegraph, self).__init__()
-		self.IS_OPENING_CHANNEL = False
 		self.EXPORTED_PARAMS_CACHE = None
 		self.settings = settings
 
@@ -208,15 +208,28 @@ class Sourcegraph(object):
 		try:
 			self.try_send(req)
 		except HTTPError as err:
-			if not self.IS_OPENING_CHANNEL:
-				self.IS_OPENING_CHANNEL = True
+			lock = Lock()
+			lock.acquire()
+			global IS_OPENING_CHANNEL
+			log_output("channel status " + str(IS_OPENING_CHANNEL))
+
+			if not IS_OPENING_CHANNEL:
+				IS_OPENING_CHANNEL = True
 				log_output('[network] Server responded with err code %s, reopening browser.' % str(err.code), is_network=True)
 				self.open_channel()
-				try:
-					self.try_send(req)
-				except Exception as err:
-					log_output('[network] curl request failed twice, aborting. %s' % str(err), is_network=True)
-				self.IS_OPENING_CHANNEL = False
+
+				browser_window_has_opened = False
+				request_attempts = 0
+				while(not browser_window_has_opened or request_attempts < 5):
+					try:
+						self.try_send(req)
+						IS_OPENING_CHANNEL = False
+						browser_window_has_opened = True
+					except Exception as err:
+						request_attempts += 1
+						log_output('[network] curl request failed twice, aborting. %s' % str(err), is_network=True)
+			lock.release()
+
 		except URLError as err:
 			log_major_failure(ERROR_CALLBACK, 'Unable to reach the Sourcegraph API.\nPlease check your internet connection and try again.\n\nError: %s' % str(err))
 		except Exception as err:
