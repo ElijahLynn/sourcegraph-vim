@@ -25,6 +25,7 @@ sourcegraph_lib.SG_LOG_FILE = '/tmp/sourcegraph-vim.log'
 settings = sourcegraph_lib.Settings()
 channel_id = get_channel()
 settings.SG_CHANNEL = channel_id
+settings.EditorType = "vim"
 
 gopath = get_vim_variable('g:SOURCEGRAPH_GOPATH')
 if gopath:
