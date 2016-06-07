@@ -4,7 +4,12 @@ if !has('python')
 	finish
 endif
 
-if (has('python') && (exists("g:SOURCEGRAPH_AUTO") && g:SOURCEGRAPH_AUTO != "false"))
+let s:startup = "true"
+let s:didOpenBrowser = "false"
+execute "pyfile " . s:path
+let s:startup = "false"
+
+if (has('python') && (!exists("g:SOURCEGRAPH_AUTO") || g:SOURCEGRAPH_AUTO == "true"))
     augroup SourcegraphVim
         autocmd VimEnter     * :call LookupSymbol()
         autocmd VimLeavePre  * :call LookupSymbol()
@@ -19,7 +24,10 @@ let s:last_filename = ''
 let s:last_word = ''
 let s:last_offset = 0
 
+au BufNewFile,BufRead *.go set filetype=go
+
 function! LookupSymbol()
+	echo ""
 	if (&ft=='go')
     	let s:filename = expand('%p')
 		let s:currword = expand('<cWORD>')

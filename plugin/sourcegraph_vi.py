@@ -25,6 +25,7 @@ sourcegraph_lib.SG_LOG_FILE = '/tmp/sourcegraph-vim.log'
 settings = sourcegraph_lib.Settings()
 channel_id = get_channel()
 settings.SG_CHANNEL = channel_id
+settings.EditorType = "vim"
 
 gopath = get_vim_variable('g:SOURCEGRAPH_GOPATH')
 if gopath:
@@ -59,5 +60,12 @@ def thread_ready(filename, curr_word, curr_offset, numlines):
 	args = sourcegraph_lib.LookupArgs(filename=filename, cursor_offset=curr_offset, preceding_selection="\n".join(lines), selected_token=curr_word)
 	sourcegraph_instance.on_selection_modified_handler(args)
 
-t = Thread(target=thread_ready, args=[vim.eval("s:filename"), vim.eval("s:currword"), vim.eval("s:curroffset"), int(vim.eval("s:numlines"))])
-t.start()
+def startup():
+	sourcegraph_instance = sourcegraph_lib.Sourcegraph(settings)
+	sourcegraph_instance.post_load(godefinfo_update=True)
+
+if vim.eval("s:startup") == "true":
+	t = Thread(target=startup).start()
+else:
+	t = Thread(target=thread_ready, args=[vim.eval("s:filename"), vim.eval("s:currword"), vim.eval("s:curroffset"), int(vim.eval("s:numlines"))])
+	t.start()
