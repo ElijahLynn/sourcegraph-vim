@@ -22,7 +22,9 @@ endif
 
 let s:last_filename = ''
 let s:last_word = ''
+let s:last_word_small = ''
 let s:last_offset = 0
+let s:last_linenumber = -1
 
 au BufNewFile,BufRead *.go set filetype=go
 
@@ -31,13 +33,17 @@ function! LookupSymbol()
 	if (&ft=='go')
     	let s:filename = expand('%p')
 		let s:currword = expand('<cWORD>')
+		let s:currword_small = expand('<cword>')
 		let s:curroffset = line2byte(line("."))+col(".")
 		let s:numlines = expand(line('$'))
-		if(s:filename==s:last_filename && s:currword==s:last_word)
+		let s:linenumber = expand(line("."))
+		if(s:filename==s:last_filename && s:currword_small==s:last_word_small && s:linenumber==s:last_linenumber)
 		else
 			let s:last_filename = s:filename
 			let s:last_word = s:currword
+			let s:last_word_small = s:currword_small
 			let s:last_offset = s:curroffset
+			let s:last_linenumber = s:linenumber
 			execute "pyfile " . s:path
 		endif
 	endif
