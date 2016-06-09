@@ -5,9 +5,6 @@ if !has('python')
 endif
 
 let s:startup = "true"
-let s:didOpenBrowser = "false"
-execute "pyfile " . s:path
-let s:startup = "false"
 
 if (has('python') && (!exists("g:SOURCEGRAPH_AUTO") || g:SOURCEGRAPH_AUTO == "true"))
     augroup SourcegraphVim
@@ -31,6 +28,12 @@ au BufNewFile,BufRead *.go set filetype=go
 function! LookupSymbol()
 	echo ""
 	if (&ft=='go')
+		
+		if (s:startup == "true")
+			execute "pyfile " . s:path
+			let s:startup = "false"
+		endif
+
     	let s:filename = expand('%p')
 		let s:currword = expand('<cWORD>')
 		let s:currword_small = expand('<cword>')
