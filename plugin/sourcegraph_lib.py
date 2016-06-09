@@ -32,10 +32,10 @@ LOCK = Lock()
 
 class Request_Manager():
 
-	def update(self):
+	def run(self):
 		item = self.q.get(True)
 		self.sourcegraph_instance.on_selection_modified_handler(item)
-		self.update()
+		self.run()
 
 	def add(self, item):
 		self.q.queue.clear()
@@ -236,23 +236,25 @@ class Sourcegraph(object):
 		try:
 			self.try_send(req)
 		except HTTPError as err:
-			global lock
-			is_locked = LOCK.locked()
-			LOCK.acquire(False)
-			if is_locked == False:
-				log_output('[network] Server responded with err code %s, reopening browser.' % str(err.code), is_network=True)
-				self.open_channel()
-				browser_window_has_opened = False
-				request_attempts = 0
-				while(not browser_window_has_opened and request_attempts < 5):
-					try:
-						self.try_send(req)
-						browser_window_has_opened = True
-						time.sleep(1)
-					except Exception as err:
-						request_attempts += 1
-						log_output('[network] curl request failed twice, aborting. %s' % str(err), is_network=True)
-				LOCK.release()
+			global LOCK
+			if LOCK.acquire(False):
+				try:
+					log_output('[network] Server responded with err code %s, reopening browser.' % str(err.code), is_network=True)
+					self.open_channel()
+					browser_window_has_opened = False
+					request_attempts = 0
+					while(not browser_window_has_opened and request_attempts < 5):
+						try:
+							self.try_send(req)
+							browser_window_has_opened = True
+							time.sleep(1)
+						except Exception as err:
+							request_attempts += 1
+							log_output('[network] curl request failed twice, aborting. %s' % str(err), is_network=True)
+				except Exception as err:
+					log_output('[system] error trying to open browser. %s' % str(err))
+				finally:
+					LOCK.release()
 		except URLError as err:
 			log_major_failure(ERROR_CALLBACK, 'Unable to reach the Sourcegraph API.\nPlease check your internet connection and try again.\n\nError: %s' % str(err))
 		except Exception as err:

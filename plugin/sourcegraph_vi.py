@@ -21,33 +21,6 @@ def get_channel():
 		vim.command("let %s = '%s'" % (variable_name, channel_id))
 		return channel_id
 
-sourcegraph_lib.SG_LOG_FILE = '/tmp/sourcegraph-vim.log'
-settings = sourcegraph_lib.Settings()
-channel_id = get_channel()
-settings.SG_CHANNEL = channel_id
-settings.EditorType = "vim"
-
-gopath = get_vim_variable('g:SOURCEGRAPH_GOPATH')
-if gopath:
-	settings.ENV['GOPATH'] = str(gopath.rstrip(os.sep)).strip()
-auto = get_vim_variable('g:SOURCEGRAPH_AUTO')
-if auto:
-	settings.AUTO = bool(auto)
-gobin = get_vim_variable('g:SOURCEGRAPH_GOBIN')
-if gobin:
-	settings.GOBIN = gobin.rstrip(os.sep)
-log_level = get_vim_variable('g:SOURCEGRAPH_LOG_LEVEL')
-if log_level:
-	sourcegraph_lib.LOG_LEVEL = int(log_level)
-enable_lookback = get_vim_variable('g:SOURCEGRAPH_ENABLE_LOOKBACK')
-if enable_lookback:
-	settings.ENABLE_LOOKBACK = bool(enable_lookback)
-base_url = get_vim_variable('g:SOURCEGRAPH_BASE_URL')
-if base_url:
-	settings.SG_BASE_URL = base_url
-log_file = get_vim_variable('g:SOURCEGRAPH_LOG_FILE')
-if log_file:
-	sourcegraph_lib.SG_LOG_FILE = log_file
 
 def add_symbol_task(filename, curr_word, curr_offset, numlines):
 	lines = []
@@ -59,8 +32,37 @@ def add_symbol_task(filename, curr_word, curr_offset, numlines):
 	sourcegraph_lib.request_manager.add(args)
 
 def startup():
+
+	sourcegraph_lib.SG_LOG_FILE = '/tmp/sourcegraph-vim.log'
+	settings = sourcegraph_lib.Settings()
+	channel_id = get_channel()
+	settings.SG_CHANNEL = channel_id
+	settings.EditorType = "vim"
+	
+	gopath = get_vim_variable('g:SOURCEGRAPH_GOPATH')
+	if gopath:
+		settings.ENV['GOPATH'] = str(gopath.rstrip(os.sep)).strip()
+	auto = get_vim_variable('g:SOURCEGRAPH_AUTO')
+	if auto:
+		settings.AUTO = bool(auto)
+	gobin = get_vim_variable('g:SOURCEGRAPH_GOBIN')
+	if gobin:
+		settings.GOBIN = gobin.rstrip(os.sep)
+	log_level = get_vim_variable('g:SOURCEGRAPH_LOG_LEVEL')
+	if log_level:
+		sourcegraph_lib.LOG_LEVEL = int(log_level)
+	enable_lookback = get_vim_variable('g:SOURCEGRAPH_ENABLE_LOOKBACK')
+	if enable_lookback:
+		settings.ENABLE_LOOKBACK = bool(enable_lookback)
+	base_url = get_vim_variable('g:SOURCEGRAPH_BASE_URL')
+	if base_url:
+		settings.SG_BASE_URL = base_url
+	log_file = get_vim_variable('g:SOURCEGRAPH_LOG_FILE')
+	if log_file:
+		sourcegraph_lib.SG_LOG_FILE = log_file
+
 	sourcegraph_lib.request_manager.setup(settings)
-	sourcegraph_lib.request_manager.update()
+	sourcegraph_lib.request_manager.run()
 
 if vim.eval("s:startup") == "true":
 	t = Thread(target=startup)
