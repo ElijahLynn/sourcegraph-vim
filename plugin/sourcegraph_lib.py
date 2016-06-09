@@ -43,7 +43,7 @@ class Request_Manager():
 
 	def setup(self, settings):
 		self.sourcegraph_instance = Sourcegraph(settings)
-		self.sourcegraph_instance.post_load(godefinfo_update=True)
+		b = Thread(target=self.sourcegraph_instance.post_load, args=[True]).start()
 
 	def __init__(self):
 		self.q = Queue()
