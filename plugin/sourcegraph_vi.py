@@ -62,10 +62,10 @@ def startup():
 		sourcegraph_lib.SG_LOG_FILE = log_file
 
 	sourcegraph_lib.request_manager.setup(settings)
-	sourcegraph_lib.request_manager.run()
 
 if vim.eval("s:startup") == "true":
-	t = Thread(target=startup)
+	startup()
+	t = Thread(target=sourcegraph_lib.request_manager.run)
 	t.setDaemon(True)
 	t.start()
 else:
