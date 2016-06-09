@@ -35,6 +35,16 @@ echo "Plug 'sourcegraph/sourcegraph-vim'" >> ~/.vimrc
 vim +PlugInstall
 ```
 
+### .vimrc 
+Enable Sourcegraph auto updating
+```
+let g:SOURCEGRAPH_AUTO = "true"
+```
+Disable Sourcegraph auto updating
+```
+let g:SOURCEGRAPH_AUTO = "false"
+```
+
 ## Usage
 
 Sourcegraph for Vim opens a channel in your browser to initialize your Sourcegraph session when in Go files. As you navigate through Go files, enter the Vim command ```:GRAPH``` when your cursor is on a symbol to load its definition and references across thousands of public Go repositories.
