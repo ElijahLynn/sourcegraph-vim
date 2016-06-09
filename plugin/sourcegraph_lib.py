@@ -6,7 +6,7 @@ import subprocess
 import sys
 import time
 
-
+from Queue import Queue
 from threading import Thread, Lock
 try:
 	from urllib.request import Request, urlopen
@@ -24,10 +24,31 @@ LOG_NONE = 0
 LOG_SYMBOLS = 1
 LOG_NETWORK = 2
 LOG_ALL = 3
-IS_OPENING_CHANNEL = False
 
 LOG_LEVEL = LOG_NONE
 SG_LOG_FILE = '/tmp/sourcegraph-editor.log'
+
+LOCK = Lock()
+
+class Request_Manager():
+
+	def update(self):
+		item = self.q.get(True)
+		self.sourcegraph_instance.on_selection_modified_handler(item)
+		self.update()
+
+	def add(self, item):
+		self.q.queue.clear()
+		self.q.put(item)
+
+	def setup(self, settings):
+		self.sourcegraph_instance = Sourcegraph(settings)
+		self.sourcegraph_instance.post_load(godefinfo_update=True)
+
+	def __init__(self):
+		self.q = Queue()
+
+request_manager = Request_Manager()
 
 class Error(object):
 	def __init__(self, title, description):
@@ -215,28 +236,23 @@ class Sourcegraph(object):
 		try:
 			self.try_send(req)
 		except HTTPError as err:
-			lock = Lock()
-			lock.acquire()
-			global IS_OPENING_CHANNEL
-			log_output("channel status " + str(IS_OPENING_CHANNEL))
-
-			if not IS_OPENING_CHANNEL:
-				IS_OPENING_CHANNEL = True
+			global lock
+			is_locked = LOCK.locked()
+			LOCK.acquire(False)
+			if is_locked == False:
 				log_output('[network] Server responded with err code %s, reopening browser.' % str(err.code), is_network=True)
 				self.open_channel()
-
 				browser_window_has_opened = False
 				request_attempts = 0
 				while(not browser_window_has_opened and request_attempts < 5):
 					try:
 						self.try_send(req)
-						IS_OPENING_CHANNEL = False
 						browser_window_has_opened = True
 						time.sleep(1)
 					except Exception as err:
 						request_attempts += 1
 						log_output('[network] curl request failed twice, aborting. %s' % str(err), is_network=True)
-			lock.release()
+				LOCK.release()
 		except URLError as err:
 			log_major_failure(ERROR_CALLBACK, 'Unable to reach the Sourcegraph API.\nPlease check your internet connection and try again.\n\nError: %s' % str(err))
 		except Exception as err:

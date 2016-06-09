@@ -49,23 +49,22 @@ log_file = get_vim_variable('g:SOURCEGRAPH_LOG_FILE')
 if log_file:
 	sourcegraph_lib.SG_LOG_FILE = log_file
 
-def thread_ready(filename, curr_word, curr_offset, numlines):
-	sourcegraph_instance = sourcegraph_lib.Sourcegraph(settings)
-	sourcegraph_instance.post_load(godefinfo_update=False)
+def add_symbol_task(filename, curr_word, curr_offset, numlines):
 	lines = []
 	for i in range(1, numlines + 1):
 		currline = vim.eval("getline('%s')" % str(i))
 		lines.append(currline)
 	preceding_selection = "\n".join(lines)
 	args = sourcegraph_lib.LookupArgs(filename=filename, cursor_offset=curr_offset, preceding_selection="\n".join(lines), selected_token=curr_word)
-	sourcegraph_instance.on_selection_modified_handler(args)
+	sourcegraph_lib.request_manager.add(args)
 
 def startup():
-	sourcegraph_instance = sourcegraph_lib.Sourcegraph(settings)
-	sourcegraph_instance.post_load(godefinfo_update=True)
+	sourcegraph_lib.request_manager.setup(settings)
+	sourcegraph_lib.request_manager.update()
 
 if vim.eval("s:startup") == "true":
-	t = Thread(target=startup).start()
-else:
-	t = Thread(target=thread_ready, args=[vim.eval("s:filename"), vim.eval("s:currword"), vim.eval("s:curroffset"), int(vim.eval("s:numlines"))])
+	t = Thread(target=startup)
+	t.setDaemon(True)
 	t.start()
+else:
+	add_symbol_task(vim.eval("s:filename"), vim.eval("s:currword"), vim.eval("s:curroffset"), int(vim.eval("s:numlines")) )
