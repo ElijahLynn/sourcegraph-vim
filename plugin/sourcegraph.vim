@@ -34,7 +34,7 @@ function! LookupSymbol()
     	let s:filename = expand('%p')
 		let s:currword = expand('<cWORD>')
 		let s:currword_small = expand('<cword>')
-		let s:curroffset = line2byte(line("."))+col(".")
+		let s:curroffset = line2byte(line("."))+col(".")-1
 		let s:numlines = expand(line('$'))
 		let s:linenumber = expand(line("."))
 		if(s:filename==s:last_filename && s:currword_small==s:last_word_small && s:linenumber==s:last_linenumber)
