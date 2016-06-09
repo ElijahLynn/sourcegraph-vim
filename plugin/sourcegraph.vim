@@ -51,5 +51,3 @@ endfunc
 
 command! GRAPH call LookupSymbol()
 
-nnoremap <F2> :GRAPH<CR>
-
