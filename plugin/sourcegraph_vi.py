@@ -69,4 +69,4 @@ if vim.eval("s:startup") == "true":
 	t.setDaemon(True)
 	t.start()
 else:
-	add_symbol_task(vim.eval("s:filename"), vim.eval("s:currword"), vim.eval("s:curroffset"), int(vim.eval("s:numlines")) )
+	add_symbol_task(os.path.abspath(vim.eval("s:filename")), vim.eval("s:currword"), vim.eval("s:curroffset"), int(vim.eval("s:numlines")) )
