@@ -43,7 +43,7 @@ let g:SOURCEGRAPH_AUTO = "false"
 
 ## Privacy
 
-Sourcegraph for your editor determines the type information for symbols locally on your development machine, using a linter called [godefino](https://github.com/sqs/godefinfo). [Check out the communication struct](https://sourcegraph.com/sourcegraph/sourcegraph@fa8331a827a3de3cd02e9e0c687387081dd8f540/-/blob/api/sourcegraph/sourcegraph.proto#L2216) to see what the Sourcegraph editor plugin sends to the Sourcegraph API. If you’d like Sourcegraph for your editor to display usage examples for your private code, [create an account and choose to link your private GitHub repositories at Sourcegraph.com.](https://sourcegraph.com/)
+Sourcegraph for your editor determines the type information for symbols locally on your development machine, using a linter called [godefinfo](https://github.com/sqs/godefinfo). [Check out the communication struct](https://sourcegraph.com/sourcegraph/sourcegraph@fa8331a827a3de3cd02e9e0c687387081dd8f540/-/blob/api/sourcegraph/sourcegraph.proto#L2216) to see what the Sourcegraph editor plugin sends to the Sourcegraph API. If you’d like Sourcegraph for your editor to display usage examples for your private code, [create an account and choose to link your private GitHub repositories at Sourcegraph.com.](https://sourcegraph.com/)
 
 ## Usage
 
