@@ -33,13 +33,17 @@ echo "Plug 'sourcegraph/sourcegraph-vim'" >> ~/.vimrc
 vim +PlugInstall
 ```
 
-![Sourcegraph for Vim](images/setup.jpg)
-
 ### .vimrc
 Sourcegraph automatically opens a live channel and shows references for your Go code as you type by default. If you want to disable this feature, set the `g:SOURCEGRAPH_AUTO` flag to "false" in your .vimrc file.
 ```
 let g:SOURCEGRAPH_AUTO = "false"
 ```
+
+![Sourcegraph for Vim](images/setup.jpg)
+
+## Privacy
+
+Sourcegraph for your editor determines the type information for symbols locally on your development machine, using a linter called [godefino](https://github.com/sqs/godefinfo). [Check out the communication struct](https://sourcegraph.com/sourcegraph/sourcegraph@fa8331a827a3de3cd02e9e0c687387081dd8f540/-/blob/api/sourcegraph/sourcegraph.proto#L2216) to see what the Sourcegraph editor plugin sends to the Sourcegraph API. If you’d like Sourcegraph for your editor to display usage examples for your private code, [create an account and choose to link your private GitHub repositories at Sourcegraph.com.](https://sourcegraph.com/)
 
 ## Usage
 
