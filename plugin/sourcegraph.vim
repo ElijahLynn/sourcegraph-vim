@@ -29,12 +29,12 @@ function! LookupSymbol()
 		let s:startup = "false"
 	endif
 
-	let s:filename = expand('%p')
+	let s:filename = expand('%:p')
 	let s:currword = expand('<cWORD>')
 	let s:currword_small = expand('<cword>')
-	let s:curroffset = line2byte(line("."))+col(".")-1
-	let s:numlines = expand(line('$'))
-	let s:linenumber = expand(line("."))
+	let s:curroffset = line2byte(line(".")) + col(".") - 1
+	let s:numlines = line('$')
+	let s:linenumber = line('.')
 	if s:filename == s:last_filename && s:currword_small == s:last_word_small && s:linenumber == s:last_linenumber
 	else
 		let s:last_filename = s:filename
