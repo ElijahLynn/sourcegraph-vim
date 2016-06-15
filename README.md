@@ -1,12 +1,10 @@
 # Sourcegraph for Vim [![CircleCI](https://circleci.com/gh/sourcegraph/sourcegraph-sublime.svg?style=svg)](https://circleci.com/gh/sourcegraph/sourcegraph-sublime)
 
-*Sourcegraph for Vim is in beta mode. If you have feedback or experience issues, please email us at help@sourcegraph.com or file an issue [here](https://github.com/sourcegraph/sourcegraph-vim/issues).*
+*Sourcegraph for Sublime is in beta mode. Feedback or issue? Please email us at support@sourcegraph.com or [file an issue.](https://github.com/sourcegraph/sourcegraph-vim/issues)*
 
 ## Overview
 
 Sourcegraph for Vim allows you to view Go definitions on [sourcegraph.com](http://www.sourcegraph.com) as you code, so you can stay focused on what's important: your code. When your cursor is on a Go symbol and you run :GRAPH (or a remapped hotkey), it should load in a channel in your browser:
-
-![Sourcegraph for Vim](images/setup.jpg)
 
 ## Setup
 
@@ -35,12 +33,10 @@ echo "Plug 'sourcegraph/sourcegraph-vim'" >> ~/.vimrc
 vim +PlugInstall
 ```
 
-### .vimrc 
-Enable Sourcegraph auto updating
-```
-let g:SOURCEGRAPH_AUTO = "true"
-```
-Disable Sourcegraph auto updating
+![Sourcegraph for Vim](images/setup.jpg)
+
+### .vimrc
+Sourcegraph automatically opens a live channel and shows references for your Go code as you type by default. If you want to disable this feature, set the `g:SOURCEGRAPH_AUTO` flag to "false" in your .vimrc file.
 ```
 let g:SOURCEGRAPH_AUTO = "false"
 ```
@@ -73,7 +69,7 @@ g:SOURCEGRAPH_GOBIN = "/path/to/gobin"
 
 ### Verbose logging
 
-This setting gives verbose output from Sourcegraph for Vim to the Vim console, which can be helping when troubleshooting Sourcegraph for Vim. Different levels of logging are available:
+This setting gives verbose output from Sourcegraph for Vim to the Vim console, which can be helpful when troubleshooting Sourcegraph for Vim. Different levels of logging are available:
 
 No logging: `0`
 
@@ -100,7 +96,8 @@ go get -u github.com/sqs/godefinfo
 If you want to try Sourcegraph for Vim on a local Sourcegraph server, you can define its base URL in this file using the key `SOURCEGRAPH_BASE_URL` in the ~/.vimrc file.
 
 ```
-g:SOURCEGRAPH_BASE_URL = "https://www.sourcegraph.com"
+g:SOURCEGRAPH_BASE_URL = "https://sourcegraph.com"
+g:SOURCEGRAPH_SEND_URL = "https://grpc.sourcegraph.com"
 ```
 
 ## Support

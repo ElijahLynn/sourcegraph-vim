@@ -38,7 +38,7 @@ def startup():
 	channel_id = get_channel()
 	settings.SG_CHANNEL = channel_id
 	settings.EditorType = "vim"
-	
+
 	gopath = get_vim_variable('g:SOURCEGRAPH_GOPATH')
 	if gopath:
 		settings.ENV['GOPATH'] = str(gopath.rstrip(os.sep)).strip()
@@ -57,6 +57,9 @@ def startup():
 	base_url = get_vim_variable('g:SOURCEGRAPH_BASE_URL')
 	if base_url:
 		settings.SG_BASE_URL = base_url
+	send_url = get_vim_variable('g:SOURCEGRAPH_SEND_URL')
+	if send_url:
+		settings.SG_SEND_URL = send_url
 	log_file = get_vim_variable('g:SOURCEGRAPH_LOG_FILE')
 	if log_file:
 		sourcegraph_lib.SG_LOG_FILE = log_file
@@ -69,4 +72,4 @@ if vim.eval("s:startup") == "true":
 	t.setDaemon(True)
 	t.start()
 else:
-	add_symbol_task(os.path.abspath(vim.eval("s:filename")), vim.eval("s:currword"), vim.eval("s:curroffset"), int(vim.eval("s:numlines")) )
+	add_symbol_task(os.path.abspath(vim.eval("s:filename")), vim.eval("s:currword"), vim.eval("s:curroffset"), int(vim.eval("s:numlines")))
