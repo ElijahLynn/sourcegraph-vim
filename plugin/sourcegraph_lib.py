@@ -43,6 +43,8 @@ class Request_Manager():
 
 	def setup(self, settings):
 		self.sourcegraph_instance = Sourcegraph(settings)
+		# Do a blocking "go get" incase the user does not have `godefinfo` 
+		self.sourcegraph_instance.post_load(False)
 		b = Thread(target=self.sourcegraph_instance.post_load, args=[True]).start()
 
 	def __init__(self):
