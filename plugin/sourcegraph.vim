@@ -26,7 +26,6 @@ let s:last_linenumber = -1
 au BufNewFile,BufRead *.go set filetype=go
 
 function! LookupSymbol()
-	echo ""
 	if (&ft=='go')
 		
 		if (s:startup == "true")
