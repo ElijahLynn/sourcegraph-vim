@@ -258,9 +258,9 @@ class Sourcegraph(object):
 				finally:
 					LOCK.release()
 		except URLError as err:
-			log_major_failure(ERROR_CALLBACK, 'Unable to reach the Sourcegraph API.\nPlease check your internet connection and try again.\n\nError: %s' % str(err))
+			log_output(ERROR_CALLBACK, 'Unable to reach the Sourcegraph API.\nPlease check your internet connection and try again.\n\nError: %s' % str(err))
 		except Exception as err:
-			log_major_failure(ERROR_CALLBACK, '[network] Unexpected exception: %s' % str(err))
+			log_output(ERROR_CALLBACK, '[network] Unexpected exception: %s' % str(err))
 
 	def open_channel_os(self):
 		command = ['%s/-/channel/%s' % (self.settings.SG_BASE_URL, self.settings.SG_CHANNEL)]
