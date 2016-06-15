@@ -27,7 +27,6 @@ def add_symbol_task(filename, curr_word, curr_offset, numlines):
 	for i in range(1, numlines + 1):
 		currline = vim.eval("getline('%s')" % str(i))
 		lines.append(currline)
-	preceding_selection = "\n".join(lines)
 	args = sourcegraph_lib.LookupArgs(filename=filename, cursor_offset=curr_offset, preceding_selection="\n".join(lines), selected_token=curr_word)
 	sourcegraph_lib.request_manager.add(args)
 
